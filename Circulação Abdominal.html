@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página em Construção</title>
+    <style>
+        /* Importando a mesma fonte da página inicial */
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+        /* Configurações gerais */
+        body {
+            font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Container principal */
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            /* Detalhe visual de "aviso" (amarelo) */
+            border-top: 5px solid #ffc107; 
+        }
+
+        /* Estilo do título principal */
+        h1 {
+            color: #1d3557;
+            font-size: 2.5em; /* Um pouco maior para dar destaque */
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        /* Adicionando o ícone através de um pseudo-elemento */
+        h1::before {
+            content: '🚧'; /* Emoji de construção */
+            display: block;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo do parágrafo de explicação */
+        .message {
+            color: #555;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* Estilo do link de "Voltar" */
+        .back-link {
+            display: inline-block;
+            background-color: #0056b3;
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .back-link:hover {
+            background-color: #004494;
+            transform: translateY(-2px);
+        }
+
+        /* Rodapé com a assinatura */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Em Construção</h1>
+        
+        <p class="message">
+            Este conteúdo ainda está sendo preparado com muito cuidado.<br>
+            Em breve, este resumo de anatomia estará disponível aqui.
+        </p>
+        
+        <a href="index.html" class="back-link">Voltar para a Página Inicial</a>
+
+        <footer class="footer">
+            <p>Elaborado por Ivael Silva - Aluno de Medicina da UNCISAL</p>
+        </footer>
+    </div>
+
+</body>
+</html>
