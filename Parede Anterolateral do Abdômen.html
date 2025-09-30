@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Revisão — Pergunta por Pergunta (Completo)</title>
+  <style>
+    :root{--bg:#f6f8fb;--card:#ffffff;--muted:#6b7280;--accent:#1e88e5;--ok:#2e7d32;--bad:#d32f2f}
+    body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;background:var(--bg);margin:0;padding:24px;}
+    .wrap{max-width:1000px;margin:0 auto;}
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    h1{font-size:20px;margin:0}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 24px rgba(12,20,40,.06);}
+    .question{font-weight:700;font-size:18px;margin-bottom:10px}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    button{cursor:pointer;padding:8px 12px;border-radius:8px;border:0;background:#efefef}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-ghost{background:transparent;border:1px solid #e6eef8}
+    .muted{color:var(--muted);font-size:14px}
+    .small{font-size:13px}
+    .foot{margin-top:12px;color:var(--muted);font-size:13px}
+    .answer{margin-top:12px;padding:12px;border-radius:8px;background:#fbfdff;border:1px solid #e9f2ff}
+    .answer p{margin:0}
+    .stats{display:flex;gap:12px;align-items:center;font-weight:600}
+    .progress-bar{height:10px;background:#e6eef8;border-radius:999px;overflow:hidden;width:100%;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),#6fb3ff);width:0%}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:640px){header{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Revisão (uma pergunta por vez) — Versão completa</h1>
+        <div class="muted small">Mostre a resposta e marque se você acertou — progresso salvo no navegador.</div>
+        <div class="muted small" id="authorLine" style="margin-top:6px">Autor: Ivael Silva - Estudante de Medicina da Uncisal</div>
+      </div>
+      <div class="stats" aria-hidden="true">
+        <div class="muted small">Acertos: <span id="statCorrect">0</span></div>
+        <div class="muted small">Erros: <span id="statWrong">0</span></div>
+        <div class="muted small">Total visto: <span id="statSeen">0</span></div>
+      </div>
+    </header>
+
+    <main class="card" id="app" role="application" aria-atomic="true">
+      <div id="meta" class="muted small" style="margin-bottom:8px">
+        <label><input type="checkbox" id="shuffleToggle"> Embaralhar perguntas</label>
+      </div>
+
+      <div id="content">
+        <div id="qcard">
+          <div class="question" id="questionText"></div>
+          <div class="muted small" id="progressText" style="margin-bottom:4px"></div>
+          <div class="muted small" id="topicText" style="margin-bottom:8px"></div>
+
+          <div class="controls">
+            <button id="showShort" class="btn-ghost">Mostrar resposta curta</button>
+            <button id="showFull" class="btn-ghost">Mostrar explicação completa</button>
+            <button id="prevBtn">Anterior</button>
+            <button id="nextBtn" class="btn-primary">Próxima</button>
+            <button id="markCorrect" style="background:#e6ffed;border:1px solid #c9efd5">Acertei</button>
+            <button id="markWrong" style="background:#fff0f0;border:1px solid #ffd7d7">Errei</button>
+          </div>
+
+          <div id="answerArea" class="answer" aria-live="polite" style="display:none">
+            <p id="shortAnswer" style="font-weight:700"></p>
+            <div id="fullAnswer" class="muted" style="margin-top:8px"></div>
+          </div>
+        </div>
+
+        <div id="summaryArea" style="display:none">
+          <div style="margin-bottom:12px">
+            <div class="muted" id="summaryText"></div>
+            <div style="margin-top:8px" class="progress-bar"><div id="progressFill" class="progress-fill"></div></div>
+          </div>
+          <div id="summaryList" style="max-height:420px;overflow:auto"></div>
+          <div style="margin-top:12px" class="controls">
+            <button id="backToQuiz">Voltar</button>
+            <button id="exportCSV" class="btn-ghost">Exportar CSV</button>
+            <button id="clearProgress" class="btn-ghost">Apagar progresso</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot">
+        Dica: use <strong>Acertei</strong> / <strong>Errei</strong> para registrar seu desempenho — você mesmo confere a resposta.
+      </div>
+
+    </main>
+
+    <footer>
+      Autor: Ivael Silva - Estudante de Medicina da Uncisal. Conteúdo das perguntas e respostas baseado no arquivo do usuário. :contentReference[oaicite:0]{index=0}
+    </footer>
+  </div>
+
+<script>
+/* ====== Metadados ====== */
+const AUTHOR = "Ivael Silva - Estudante de Medicina da Uncisal";
+
+/* ====== QUESTIONS: todas as questões com campo 'topic' ======
+   Fonte: Questões.pdf (arquivo do usuário). :contentReference[oaicite:1]{index=1}
+*/
+const QUESTIONS = [
+  { id:1,
+    q: "Sintopia do fígado: onde o fígado se localiza primariamente?",
+    topic: "Anatomia topográfica - Fígado",
+    short: "Hipocôndrio direito e maior parte da região epigástrica.",
+    full: "O fígado ocupa o hipocôndrio direito e a maior parte da região epigástrica, podendo estender-se ao hipocôndrio esquerdo; protegido pelas costelas VII–XI, sua posição varia com a respiração."
+  },
+  { id:2,
+    q: "Sintopia do baço: localização e relações principais?",
+    topic: "Anatomia topográfica - Baço",
+    short: "Hipocôndrio esquerdo (QSE), costelas IX–XI; relaciona-se com estômago e rim esquerdo.",
+    full: "O baço repousa no hipocôndrio esquerdo, protegido pelas costelas IX–XI; relaciona-se medialmente com o rim esquerdo, anteriormente com o estômago e liga-se ao estômago pelo ligamento gastroesplênico."
+  },
+  { id:3,
+    q: "Sintopia do pâncreas: posição anatômica básica?",
+    topic: "Anatomia topográfica - Pâncreas",
+    short: "Retroperitoneal; cabeça na curva do duodeno; corpo/cauda dirigem-se para a esquerda.",
+    full: "O pâncreas é retroperitoneal, com a cabeça aninhada na curva do duodeno (nível L2) e o corpo/cauda indo em direção ao hilo do baço, cruzando estruturas como a aorta e L1."
+  },
+  { id:4,
+    q: "O que é o abdômen e quais os seus limites principais (teto e assoalho)?",
+    topic: "Anatomia geral - Limites do abdome",
+    short: "Teto: diafragma. Assoalho: músculo levantador do ânus (diafragma pélvico).",
+    full: "O abdômen é um compartimento tridimensional; superiormente é limitado pelo diafragma e inferiormente pelo músculo levantador do ânus. Anterior/ lateral/ posterior têm limites formados por parede musculoaponeurótica e coluna lombar com músculos psoas, quadrado lombar e ilíaco."
+  },
+  { id:5,
+    q: "Qual a 'força invisível' que age no abdômen e por que é importante em trauma?",
+    topic: "Fisiologia/Trauma - Pressão intra-abdominal",
+    short: "Pressão intra-abdominal positiva (PIA).",
+    full: "A PIA é a compressão gerada pelos músculos abdominais e diafragma num compartimento fechado; fisiologicamente ajuda postura e evacuação. Em trauma de alta energia, picos de PIA geram ondas hidráulicas que podem romper órgãos ocos ou fragmentar órgãos sólidos."
+  },
+  { id:6,
+    q: "Quais são as camadas até entrar na cavidade peritoneal?",
+    topic: "Anatomia - Camadas da parede abdominal",
+    short: "Pele → Camper/Scarpa → aponeuroses/músculos → fáscia transversalis → peritônio parietal.",
+    full: "Sequência típica: pele, tela subcutânea (Camper e Scarpa), aponeuroses dos músculos (oblíquos/transverso), fáscia transversalis, gordura pré-peritoneal e por fim peritônio parietal — perfuração deste último abre a cavidade peritoneal."
+  },
+  { id:7,
+    q: "Por que suturar a fáscia de Scarpa separadamente da de Camper ao fechar incisão infraumbilical?",
+    topic: "Cirurgia/Incisão - Fechamento de Scarpa",
+    short: "Scarpa é membranosa e retém sutura; Camper é adiposa e não segura bem suturas.",
+    full: "Scarpa é uma camada fibrosa membranosa que fornece suporte mecânico quando suturada; Camper é gordurosa e não retém bem os pontos. Fechar Scarpa reduz espaço morto e melhora resistência e estética do fechamento."
+  },
+  { id:8,
+    q: "Qual o marco vascular para diferenciar hérnia inguinal direta de indireta (visão interna)?",
+    topic: "Hérnias - Anatomia inguinal",
+    short: "Vasos epigástricos inferiores (prega umbilical lateral).",
+    full: "A prega umbilical lateral contém os vasos epigástricos inferiores: hérnia medial a esses vasos = direta (Hesselbach); lateral = indireta (segue o anel inguinal profundo)."
+  },
+  { id:9,
+    q: "O que é o saco herniário (anatomicamente)?",
+    topic: "Hérnias - Saco herniário",
+    short: "Uma bolsa de peritônio parietal projetada através do defeito da parede.",
+    full: "O saco herniário é um divertículo feito pelo peritônio parietal que foi empurrado através do defeito na parede abdominal. O conteúdo herniário (ex.: alça intestinal) está dentro desse saco."
+  },
+  { id:10,
+    q: "Por que a hérnia estrangulada é uma emergência e a redutível pode ser eletiva?",
+    topic: "Hérnias - Estrangulamento",
+    short: "Estrangulada compromete o suprimento sanguíneo → isquemia/necrose; redutível preserva vascularização.",
+    full: "Na estrangulada o anel fáscio-muscular comprime vasos do conteúdo, levando à isquemia, necrose e risco de perfuração/peritonite; exige cirurgia imediata. A redutível tem fluxo preservado e pode ser reparada eletivamente."
+  },
+  { id:11,
+    q: "Descreva o canal femoral e por que tem alto risco de estrangulamento.",
+    topic: "Anatomia - Canal femoral",
+    short: "Canal medial da bainha femoral, pequeno e limitado por estruturas rígidas → fácil compressão do conteúdo.",
+    full: "O canal femoral é o compartimento medial da bainha femoral, contendo tecido conjuntivo e vasos linfáticos. O anel femoral é limitado por ligamento inguinal, ligamento pectíneo e lacunar — estruturas inflexíveis que predispõem ao estrangulamento."
+  },
+  { id:12,
+    q: "O que é o Orifício Miopectíneo de Fruchaud e por que é importante?",
+    topic: "Hérnias - Orifício miopectíneo",
+    short: "Grande área de fraqueza na parede inferior que reúne locais de hérnia inguinal/femoral.",
+    full: "O orifício miopectíneo é a zona através da qual hérnias inguinais e femorais emergem; a cirurgia moderna com telas visa cobrir essa área globalmente para reduzir recorrência."
+  },
+  { id:13,
+    q: "O que é o ligamento inguinal (Ligamento de Poupart)?",
+    topic: "Anatomia - Ligamento inguinal",
+    short: "Borda inferior da aponeurose do oblíquo externo formando uma fita aponeurótica.",
+    full: "O ligamento inguinal é formado pela borda inferior da aponeurose do oblíquo externo; separa abdômen da coxa e é marco para distinguir hérnias inguinais (acima) das femorais (abaixo)."
+  },
+  { id:14,
+    q: "O que é o Trígono de Petit e seus limites?",
+    topic: "Anatomia - Trígono de Petit",
+    short: "Espaço posterolateral: base crista ilíaca; medial latíssimo do dorso; lateral oblíquo externo.",
+    full: "Trígono de Petit é uma área posterolateral frágil da parede abdominal; o piso é o oblíquo interno, menos espesso, gerando risco de hérnia (hérnia de Petit)."
+  },
+  { id:15,
+    q: "O que é a Linha Alba e do que ela é constituída?",
+    topic: "Anatomia - Linha alba",
+    short: "Fita tendinosa na linha média formada pela fusão das aponeuroses dos oblíquos e transverso.",
+    full: "A linha alba vai do processo xifoide à sínfise púbica, formada pelo cruzamento das aponeuroses — é ponto de referência e pode apresentar diástase ou hérnias."
+  },
+  { id:16,
+    q: "Diferença entre diástase dos retos e hérnia umbilical?",
+    topic: "Anatomia/Clínica - Diástase vs Hérnia",
+    short: "Diástase = separação sem solução de continuidade; hérnia = defeito fascial (orifício).",
+    full: "Na diástase os retos se distanciam mas a fáscia permanece íntegra (sem anel herniário). Na hérnia há ruptura fascial com risco de estrangulamento."
+  },
+  { id:17,
+    q: "O que é o 'adminículo linha alba' (mencionado nas notas)?",
+    topic: "Anatomia - Linha alba (adminículo)",
+    short: "Porção inferior da linha alba, mais espessa pelo cruzamento aponeurótico.",
+    full: "Adminículo da linha alba refere-se à parte inferior onde as aponeuroses se cruzam com maior densidade, conferindo reforço nessa região."
+  },
+  { id:18,
+    q: "Quais as morfologias abdominais por ascite: 'globoso' vs 'de batráquio'?",
+    topic: "Clínica - Ascite",
+    short: "Globoso: tenso e arredondado; Batráquio: achatado central com líquido nos flancos quando deitado.",
+    full: "Ascite causa abdome globoso (distensão tensa) em pé; deitado o líquido corre aos flancos dando aspecto 'de batráquio' — diferenças dependem da posição e distribuição do líquido."
+  },
+  { id:19,
+    q: "Diferença entre abdômen flácido e abdômen em pêndulo (causa anatômica)?",
+    topic: "Anatomia/Estética - Abdome flácido vs pêndulo",
+    short: "Flácido: fraqueza músculo-aponeurótica. Pêndulo: excesso de pele/gordura (tecido pendente).",
+    full: "Abdômen flácido é por hipotonia/fragilidade da 'cinta' músculo-aponeurótica; abdômen em pêndulo é excesso de parede (pele/gordura) que pende e é tratado por abdominoplastia."
+  },
+  { id:20,
+    q: "O que é o Forame de Winslow e sua relevância cirúrgica?",
+    topic: "Anatomia peritoneal profunda - Forame de Winslow",
+    short: "Abertura entre saco maior e saco menor (bolsa omental); rota para a Manobra de Pringle.",
+    full: "Forame de Winslow comunica os sacos peritoneais; por trás do ligamento hepatoduodenal permite ao cirurgião alcançar a tríade portal para pinçar (Manobra de Pringle) em controle de hemorragia hepática."
+  },
+  { id:21,
+    q: "O que é a Bolsa Omental (saco menor)?",
+    topic: "Anatomia peritoneal profunda - Bolsa omental",
+    short: "Recesso intraperitoneal localizado atrás do estômago (intraperitoneal).",
+    full: "A bolsa omental é um recesso da cavidade peritoneal imediatamente posterior ao estômago; sua anatomia é importante para acesso cirúrgico ao pâncreas e estruturas retroperitoneais."
+  },
+  { id:22,
+    q: "Onde localizar fígado/baço/pâncreas nas 9 regiões (tríade da morte)?",
+    topic: "Topografia abdominal - Órgãos nas 9 regiões",
+    short: "Fígado: hipocôndrio direito/epigástrio; Baço: hipocôndrio esquerdo; Pâncreas: epigástrio/umbilical (cabeça) e hipocôndrio esquerdo (cauda).",
+    full: "Usando 9 regiões: fígado principal no hipocôndrio direito e epigástrio; baço no hipocôndrio esquerdo; pâncreas atravessa epigástrio/umbilical com corpo/cauda dirigindo-se ao hipocôndrio esquerdo."
+  },
+  { id:23,
+    q: "Quais estruturas do intestino delgado ficam na região umbilical?",
+    topic: "Topografia - Intestino delgado",
+    short: "Jejuno e íleo predominam na região umbilical.",
+    full: "O jejuno e o íleo ocupam a região umbilical; clinicamente a dor visceral inicial por apendicite/obstrução pode ser referida nessa região."
+  },
+  { id:24,
+    q: "Por que a dor da apendicite migra de epigástrio/umbigo para região ilíaca direita?",
+    topic: "Fisiopatologia - Dor apendicular",
+    short: "Inicialmente dor visceral referida (T10) → depois inflamação do peritônio parietal produz dor somática localizada no ponto de McBurney.",
+    full: "A dor visceral é mal localizada; quando a inflamação alcança o peritônio parietal, fibras somáticas são estimuladas e a dor torna-se localizada na região ilíaca direita (McBurney)."
+  },
+  { id:25,
+    q: "Localização precisa do Ponto de McBurney?",
+    topic: "Anatomia clínica - McBurney",
+    short: "Junção do terço lateral com os dois terços mediais na linha entre umbigo e EIAS direita.",
+    full: "Ponto de McBurney situa-se na linha traçada entre o umbigo e a espinha ilíaca anterossuperior (EIAS) direita, na junção do terço lateral com os dois terços mediais — projeção da base do apêndice."
+  },
+  { id:26,
+    q: "Explique o mecanismo do Sinal de Blumberg (dor à descompressão).",
+    topic: "Semiologia - Sinal de Blumberg",
+    short: "Descompressão brusca estica o peritônio parietal inflamado, causando dor intensa.",
+    full: "Durante descompressão rápida, o peritônio inflamado vibra/estica subitamente estimulando terminações somáticas hipersensíveis — mais doloroso que compressão lenta."
+  },
+  { id:27,
+    q: "Defina Linha Arqueada (de Douglas) e sua relevância clínica.",
+    topic: "Anatomia - Linha arqueada",
+    short: "Marcação horizontal onde a bainha posterior do reto termina; abaixo dela falta bainha posterior.",
+    full: "A linha arqueada marca o fim da lâmina posterior da bainha do reto; abaixo dela a face posterior do reto fica coberta apenas por fáscia transversalis e peritônio, criando um ponto de fragilidade."
+  },
+  { id:28,
+    q: "Diferencie Linha Arqueada e Linha Semilunar (Spigel).",
+    topic: "Anatomia - Linha semilunar (Spigel)",
+    short: "Arqueada = horizontal (transição da bainha posterior). Semilunar = borda lateral vertical do reto (ponto de hérnia de Spigel).",
+    full: "A linha arqueada é um limite horizontal da bainha do reto; a linha semilunar é a borda lateral do reto onde a aponeurose se junta; hérnia de Spigel ocorre na junção e pode ser intersticial, difícil de identificar."
+  },
+  { id:29,
+    q: "Que hérnia se associa à linha semilunar e por que é difícil diagnosticar?",
+    topic: "Hérnias - Hérnia de Spigel",
+    short: "Hérnia de Spigel; pode ser intersticial entre camadas, sem protuberância subcutânea evidente.",
+    full: "A hérnia de Spigel surge na linha semilunar; seu saco pode formar-se entre camadas musculares (intraparietal), ocultando a protuberância e tornando o diagnóstico clínico mais desafiador."
+  },
+  { id:30,
+    q: "O que é 'caput medusae' e sua relação com hipertensão portal?",
+    topic: "Fisiopatologia - Caput medusae",
+    short: "Veias paraumbilicais dilatadas por circulação colateral na hipertensão portal.",
+    full: "Na hipertensão portal (ex.: cirrose), o sangue recanaliza veias paraumbilicais e epigástricas, criando veias superficiais dilatadas ao redor do umbigo (caput medusae)."
+  },
+  { id:31,
+    q: "Explique a Síndrome Compartimental Abdominal (SCA) e por que leva a falência de órgãos.",
+    topic: "Cirurgia/Crítico - Síndrome Compartimental Abdominal",
+    short: "Pressão intra-abdominal elevada comprime vasos e órgãos → isquemia e disfunção múltipla.",
+    full: "SCA é hipertensão intra-abdominal crônica/aglomerada que reduz perfusão renal, intestinal e hepática, além de elevar diafragma e comprometer função respiratória/cardiológica, levando a falência multiorgânica."
+  },
+  { id:32,
+    q: "Quais os mecanismos de lesão pela onda de pressão hidráulica em trauma abdominal?",
+    topic: "Trauma - Onda de pressão hidráulica",
+    short: "Ruptura de órgãos ocos (peritonite) e fragmentação de órgãos sólidos (hemorragia interna).",
+    full: "A onda de pressão pode explodir órgãos ocos cheios (intestino, bexiga) causando peritonite; órgãos sólidos (fígado/baço) podem fragmentar e sangrar massivamente, levando a choque."
+  },
+  { id:33,
+    q: "Por que a transição de hérnia redutível para estrangulada é clinicamente relevante?",
+    topic: "Clínica - Evolução para estrangulamento",
+    short: "Estrangulada corta fluxo sanguíneo → necrose/perfuração; demanda intervenção urgente.",
+    full: "A possibilidade de estrangulamento transforma uma condição comum em emergência cirúrgica; por isso muitas hérnias redutíveis são reparadas para evitar evolução para estrangulamento."
+  },
+  { id:34,
+    q: "Quais as quatro linhas que dividem o abdome nas nove regiões topográficas?",
+    topic: "Topografia abdominal - Divisão em 9 regiões",
+    short: "Duas verticais (linhas hemiclaviculares) e duas horizontais (sup. e inf.).",
+    full: "As divisões usam duas linhas verticais (traçando da linha hemiclavicular ao ligamento inguinal) e duas horizontais (linha transpylórica superior e linha que passa pelo ponto mais alto da crista ilíaca) para formar 9 regiões."
+  }
+];
+
+/* ====== Estado e persistência ====== */
+const STORAGE_KEY = 'pdf_quiz_complete_v1_with_topics';
+let state = {
+  order: QUESTIONS.map((q,i)=>q.id),
+  index: 0,
+  marks: {} /* id -> 'correct'|'wrong'|'seen' */
+};
+try {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    if (parsed.order) state.order = parsed.order;
+    if (typeof parsed.index === 'number') state.index = parsed.index;
+    if (parsed.marks) state.marks = parsed.marks;
+  }
+} catch(e){ console.warn('Erro ao ler progresso:', e); }
+
+/* ====== Helpers e render ====== */
+function getQuestionById(id){ return QUESTIONS.find(q=>q.id===id); }
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); updateStats(); }
+function updateStats(){
+  const seen = Object.keys(state.marks).length;
+  const correct = Object.values(state.marks).filter(v=>v==='correct').length;
+  const wrong = Object.values(state.marks).filter(v=>v==='wrong').length;
+  document.getElementById('statSeen').textContent = seen;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  const fill = (seen===0?0:Math.round((correct/Math.max(1,seen))*100));
+  document.getElementById('progressFill').style.width = fill + '%';
+  // author line
+  document.getElementById('authorLine').textContent = 'Autor: ' + AUTHOR;
+}
+
+const questionText = document.getElementById('questionText');
+const progressText = document.getElementById('progressText');
+const topicText = document.getElementById('topicText');
+const answerArea = document.getElementById('answerArea');
+const shortAnswer = document.getElementById('shortAnswer');
+const fullAnswer = document.getElementById('fullAnswer');
+
+function render(){
+  if (state.index < 0) state.index = 0;
+  if (state.index >= state.order.length) state.index = state.order.length - 1;
+  const qid = state.order[state.index];
+  const q = getQuestionById(qid);
+  if (!q) {
+    questionText.textContent = 'Nenhuma pergunta encontrada.';
+    progressText.textContent = '';
+    topicText.textContent = '';
+    return;
+  }
+  questionText.textContent = q.q;
+  progressText.textContent = `Pergunta ${state.index+1} de ${state.order.length}`;
+  topicText.textContent = `Tópico: ${q.topic || '—'}`;
+  answerArea.style.display = 'none';
+  shortAnswer.textContent = '';
+  fullAnswer.textContent = '';
+  updateStats();
+}
+
+/* ====== Ações ====== */
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if (state.index < state.order.length - 1) {
+    state.index++;
+    save();
+    render();
+  } else {
+    showSummary();
+  }
+});
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if (state.index > 0) {
+    state.index--;
+    save();
+    render();
+  }
+});
+document.getElementById('showShort').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  shortAnswer.textContent = q ? q.short : '';
+  fullAnswer.textContent = '';
+  answerArea.style.display = 'block';
+  if (!state.marks[q.id]) { state.marks[q.id] = 'seen'; save(); }
+});
+document.getElementById('showFull').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  shortAnswer.textContent = q ? q.short : '';
+  fullAnswer.textContent = q ? q.full : '';
+  answerArea.style.display = 'block';
+  if (!state.marks[q.id]) { state.marks[q.id] = 'seen'; save(); }
+});
+document.getElementById('markCorrect').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  state.marks[q.id] = 'correct';
+  save();
+  flashFeedback('Certo!', 'ok');
+});
+document.getElementById('markWrong').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  state.marks[q.id] = 'wrong';
+  save();
+  flashFeedback('Marcado como errado', 'bad');
+});
+function flashFeedback(txt, type){
+  const el = document.createElement('div');
+  el.textContent = txt;
+  el.style.position = 'fixed';
+  el.style.right = '18px';
+  el.style.bottom = '18px';
+  el.style.padding = '10px 14px';
+  el.style.borderRadius = '10px';
+  el.style.background = (type==='ok') ? '#e6ffed' : '#fff0f0';
+  el.style.border = (type==='ok') ? '1px solid #c9efd5' : '1px solid #ffd7d7';
+  el.style.boxShadow = '0 8px 24px rgba(12,20,40,.08)';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1100);
+}
+
+/* ====== Shuffle toggle ====== */
+const shuffleToggle = document.getElementById('shuffleToggle');
+shuffleToggle.addEventListener('change', ()=>{
+  if (shuffleToggle.checked) {
+    const arr = QUESTIONS.map(q=>q.id);
+    for (let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    state.order = arr;
+    state.index = 0;
+    save(); render();
+  } else {
+    state.order = QUESTIONS.map(q=>q.id);
+    state.index = 0;
+    save(); render();
+  }
+});
+
+/* ====== Summary ====== */
+function showSummary(){
+  document.getElementById('qcard').style.display = 'none';
+  const summaryArea = document.getElementById('summaryArea');
+  summaryArea.style.display = 'block';
+  const seen = Object.keys(state.marks).length;
+  const correct = Object.values(state.marks).filter(v=>v==='correct').length;
+  const wrong = Object.values(state.marks).filter(v=>v==='wrong').length;
+  document.getElementById('summaryText').textContent = `Vistas: ${seen} — Acertos: ${correct} — Erros: ${wrong}`;
+  const list = document.getElementById('summaryList');
+  list.innerHTML = '';
+  QUESTIONS.forEach(q=>{
+    const mark = state.marks[q.id] || '—';
+    const row = document.createElement('div');
+    row.style.padding = '8px';
+    row.style.borderBottom = '1px solid #f1f5f9';
+    row.innerHTML = `<strong>${q.q}</strong>
+      <div class="muted small">Tópico: ${q.topic || '—'}</div>
+      <div class="muted small">Status: ${mark}</div>
+      <div class="muted small">Resposta curta: ${q.short}</div>`;
+    list.appendChild(row);
+  });
+}
+document.getElementById('backToQuiz').addEventListener('click', ()=>{
+  document.getElementById('summaryArea').style.display = 'none';
+  document.getElementById('qcard').style.display = 'block';
+});
+
+/* ====== Export CSV & Clear progress ====== */
+function toCSV(){
+  const rows = [['id','pergunta','topico','status','timestamp']];
+  QUESTIONS.forEach(q=>{
+    const status = state.marks[q.id] || '';
+    const qtext = q.q.replace(/"/g,'""');
+    const topic = (q.topic||'').replace(/"/g,'""');
+    rows.push([q.id, `"${qtext}"`, `"${topic}"`, status, new Date().toISOString()]);
+  });
+  return rows.map(r=>r.join(',')).join('\n');
+}
+document.getElementById('exportCSV').addEventListener('click', ()=>{
+  const csv = toCSV();
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'revisao_quiz_completo_com_topicos.csv';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('clearProgress').addEventListener('click', ()=>{
+  if (!confirm('Apagar todo o progresso salvo no navegador?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = { order: QUESTIONS.map(q=>q.id), index:0, marks:{} };
+  render(); updateStats();
+});
+
+/* ====== Init ====== */
+render();
+updateStats();
+
+/* ====== Atalhos de teclado ======
+   N / ArrowRight = próxima
+   P / ArrowLeft = anterior
+   S = mostrar resposta curta
+   F = mostrar explicação completa
+   A = marque "Acertei"
+   E = marque "Errei"
+*/
+document.addEventListener('keydown', (ev)=>{
+  if (ev.key === 'ArrowRight' || ev.key.toLowerCase() === 'n') document.getElementById('nextBtn').click();
+  if (ev.key === 'ArrowLeft' || ev.key.toLowerCase() === 'p') document.getElementById('prevBtn').click();
+  if (ev.key.toLowerCase() === 's') document.getElementById('showShort').click();
+  if (ev.key.toLowerCase() === 'f') document.getElementById('showFull').click();
+  if (ev.key.toLowerCase() === 'a') document.getElementById('markCorrect').click();
+  if (ev.key.toLowerCase() === 'e') document.getElementById('markWrong').click();
+});
+</script>
+</body>
+</html>
