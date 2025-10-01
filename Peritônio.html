@@ -1,108 +1,412 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!doctype html>
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página em Construção</title>
-    <style>
-        /* Importando a mesma fonte da página inicial */
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
-
-        /* Configurações gerais */
-        body {
-            font-family: 'Lato', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-
-        /* Container principal */
-        .container {
-            width: 90%;
-            max-width: 700px;
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            /* Detalhe visual de "aviso" (amarelo) */
-            border-top: 5px solid #ffc107; 
-        }
-
-        /* Estilo do título principal */
-        h1 {
-            color: #1d3557;
-            font-size: 2.5em; /* Um pouco maior para dar destaque */
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        
-        /* Adicionando o ícone através de um pseudo-elemento */
-        h1::before {
-            content: '🚧'; /* Emoji de construção */
-            display: block;
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        /* Estilo do parágrafo de explicação */
-        .message {
-            color: #555;
-            font-size: 1.2em;
-            line-height: 1.6;
-            margin-bottom: 35px;
-        }
-
-        /* Estilo do link de "Voltar" */
-        .back-link {
-            display: inline-block;
-            background-color: #0056b3;
-            color: #ffffff;
-            padding: 12px 25px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 1em;
-            font-weight: 700;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-
-        .back-link:hover {
-            background-color: #004494;
-            transform: translateY(-2px);
-        }
-
-        /* Rodapé com a assinatura */
-        .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 14px;
-            color: #888;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Revisão — Peritônio e Cavidade Peritoneal</title>
+  <style>
+    /* --- NOVO TEMA (tons esverdeados, visual limpo) --- */
+    :root{
+      --bg:#eef7f5;
+      --card:#ffffff;
+      --muted:#3f6b60;
+      --accent:#0b6b5c;
+      --accent-2:#17a589;
+      --ok:#2e7d32;
+      --bad:#c92a2a;
+      --glass: rgba(11,107,92,0.06);
+    }
+    html,body{height:100%}
+    body{
+      font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;
+      background:linear-gradient(180deg, #f6faf9 0%, #eef7f5 100%);
+      margin:0;padding:28px;color:#0b2f29;
+    }
+    .wrap{max-width:1024px;margin:0 auto;}
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:18px}
+    h1{font-size:20px;margin:0;color:var(--accent)}
+    .subtitle{color:var(--muted);font-size:13px;margin-top:6px}
+    .card{background:var(--card);padding:20px;border-radius:14px;box-shadow:0 10px 30px rgba(8,40,32,0.06);border:1px solid var(--glass)}
+    .question{font-weight:700;font-size:18px;margin-bottom:8px;color:#073b35}
+    .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    button{cursor:pointer;padding:8px 12px;border-radius:10px;border:0;background:#f1f8f6;color:var(--accent);font-weight:600}
+    .btn-primary{background:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(11,107,92,0.12)}
+    .btn-ghost{background:transparent;border:1px solid #def2ec;color:var(--accent)}
+    .muted{color:var(--muted);font-size:14px}
+    .small{font-size:13px}
+    .foot{margin-top:14px;color:var(--muted);font-size:13px}
+    .answer{margin-top:12px;padding:14px;border-radius:10px;background:linear-gradient(180deg,#fbfffe,#f3fff9);border:1px solid #e6faf5}
+    .answer p{margin:0}
+    .stats{display:flex;gap:14px;align-items:center;font-weight:700;color:var(--muted)}
+    .progress-bar{height:10px;background:#e8f6f3;border-radius:999px;overflow:hidden;width:100%;}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:0%}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    @media (max-width:720px){header{flex-direction:column;align-items:flex-start}}
+    /* --- Social link --- */
+    .social-link { color: var(--accent); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 7px; }
+    .social-link svg { width:16px; height:16px; display:inline-block; vertical-align:middle; fill: currentColor; }
+    /* small responsive tweaks */
+    .meta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .topic-pill{background:#eef9f7;border-radius:999px;padding:6px 10px;font-size:13px;color:var(--accent-2);border:1px solid #dff3ef}
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Revisão — Peritônio e Cavidade Peritoneal</h1>
+        <div class="subtitle">Uma pergunta por vez — clique em "Mostrar explicação completa" e registre se você <em>acertou</em>.</div>
+        <div id="authorLine" class="subtitle" style="margin-top:8px"></div>
+      </div>
+      <div class="stats" aria-hidden="true">
+        <div class="muted small">Acertos: <span id="statCorrect">0</span></div>
+        <div class="muted small">Erros: <span id="statWrong">0</span></div>
+        <div class="muted small">Vistos: <span id="statSeen">0</span></div>
+      </div>
+    </header>
 
-    <div class="container">
-        <h1>Em Construção</h1>
-        
-        <p class="message">
-            Este conteúdo ainda está sendo preparado com muito cuidado.<br>
-            Em breve, este resumo de anatomia estará disponível aqui.
-        </p>
-        
-        <a href="index.html" class="back-link">Voltar para a Página Inicial</a>
+    <main class="card" id="app" role="application" aria-atomic="true">
+      <div class="meta-row" style="margin-bottom:12px;">
+        <label class="muted small"><input type="checkbox" id="shuffleToggle"> Embaralhar perguntas</label>
+        <div style="flex:1"></div>
+        <div style="width:320px">
+          <div class="progress-bar" aria-hidden="true"><div id="progressFill" class="progress-fill"></div></div>
+        </div>
+      </div>
 
-        <footer class="footer">
-            <p>Elaborado por Ivael Silva - Aluno de Medicina da UNCISAL</p>
-        </footer>
-    </div>
+      <div id="qcard">
+        <div class="question" id="questionText"></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+          <div class="muted small" id="progressText"></div>
+          <div id="topicText" class="topic-pill" style="margin-left:auto"></div>
+        </div>
 
+        <div class="controls">
+          <button id="showShort" class="btn-ghost">Mostrar resposta curta</button>
+          <button id="showFull" class="btn-ghost">Mostrar explicação completa</button>
+          <button id="prevBtn">Anterior</button>
+          <button id="nextBtn" class="btn-primary">Próxima</button>
+          <button id="markCorrect" style="background:#e8fff1;border:1px solid #cbeddd">Acertei</button>
+          <button id="markWrong" style="background:#fff5f5;border:1px solid #ffdede">Errei</button>
+        </div>
+
+        <div id="answerArea" class="answer" aria-live="polite" style="display:none">
+          <p id="shortAnswer" style="font-weight:800"></p>
+          <div id="fullAnswer" class="muted" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+      <div id="summaryArea" style="display:none;margin-top:12px">
+        <div style="margin-bottom:12px">
+          <div class="muted" id="summaryText"></div>
+        </div>
+        <div id="summaryList" style="max-height:420px;overflow:auto;border-radius:10px;padding:6px;background:#fbfffe;border:1px solid #e6faf5"></div>
+        <div style="margin-top:12px" class="controls">
+          <button id="backToQuiz">Voltar</button>
+          <button id="exportCSV" class="btn-ghost">Exportar CSV</button>
+          <button id="clearProgress" class="btn-ghost">Apagar progresso</button>
+        </div>
+      </div>
+
+      <div class="foot" style="margin-top:14px">
+        Dica: use <strong>Acertei</strong> / <strong>Errei</strong> para registrar seu desempenho — salvo no navegador.
+      </div>
+    </main>
+
+    <footer>
+      <p style="margin-bottom:6px">
+        <a href="https://www.instagram.com/nutrimed_ivael" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zM8 4.202a3.79 3.79 0 1 0 0 7.58 3.79 3.79 0 0 0 0-7.58z"/></svg>
+          Ivael Silva
+        </a> - Estudante de Medicina da Uncisal
+      </p>
+      <p style="margin:0">ANATOMIA TOPOGRÁFICA</p>
+    </footer>
+  </div>
+
+<script>
+/* ====== Metadados e autor (renderizado como HTML link) ====== */
+const AUTHOR = `<a href="https://www.instagram.com/nutrimed_ivael" target="_blank" rel="noopener noreferrer" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zM8 4.202a3.79 3.79 0 1 0 0 7.58 3.79 3.79 0 0 0 0-7.58z"/></svg> Ivael Silva</a> - Estudante de Medicina da Uncisal`;
+
+/* ====== QUESTIONS (extraídas do PDF: Peritônio e cavidade peritoneal - Questões.pdf) ======
+   Fonte: Questões.pdf (arquivo do usuário). :contentReference[oaicite:1]{index=1}
+*/
+const QUESTIONS = [
+  { id:1,
+    q: "Descreva a diferença fundamental entre víscera intraperitoneal e retroperitoneal.",
+    topic: "Classificação das vísceras - Peritônio",
+    short: "Intraperitoneal: fruto de meso que a suspende e está coberta por peritónio visceral; Retroperitoneal: apenas a face anterior é coberta pelo peritónio parietal e é mais fixa.",
+    full: "Uma víscera intraperitoneal (ex.: cólon transverso) é quase totalmente envolvida por peritónio visceral e suspensa por um meso, conferindo mobilidade. Uma víscera retroperitoneal (ex.: cólon ascendente) fica atrás do peritónio parietal, coberta só na face anterior e fixada à parede posterior."
+  },
+  { id:2,
+    q: "Por que uma hemorragia retroperitoneal maciça pode ser 'invisível' num exame inicial da cavidade peritoneal?",
+    topic: "Peritonio - Hemorragia retroperitoneal",
+    short: "Porque o sangue se acumula no espaço retroperitoneal, separado da cavidade peritoneal, podendo conter grande volume sem derramar na cavidade livre.",
+    full: "O espaço retroperitoneal está fora da cavidade peritoneal; sangue gerado por lesão retroperitoneal (ex.: fratura pélvica) pode ficar oculto nesse espaço e não aparecer em exame abdominal com líquido intraperitoneal, escondendo perda volêmica massiva."
+  },
+  { id:3,
+    q: "Qual característica anatômica exclusiva da cavidade peritoneal feminina e sua principal consequência patológica?",
+    topic: "Anatomia - Comunicação peritoneal feminina",
+    short: "Comunicação direta com o meio externo via trompa de Falópio; consequência: risco de DIP (infecção ascendente).",
+    full: "As trompas de Falópio abrem-se na cavidade peritoneal para captar o óvulo — isso gera uma via direta entre o meio externo e a cavidade peritoneal. Consequentemente, infecções do trato genital inferior podem ascender e causar Doença Inflamatória Pélvica (DIP) e peritonite."
+  },
+  { id:4,
+    q: "Por que o ovário é descrito como uma exceção entre órgãos intraperitoneais?",
+    topic: "Anatomia funcional - Ovário",
+    short: "Apesar de estar na cavidade peritoneal, o ovário não é coberto por peritónio, permitindo ovulação.",
+    full: "O ovário está dentro da cavidade peritoneal mas não é revestido por peritónio visceral: essa 'nudez' facilita a liberação do óvulo diretamente na cavidade peritoneal para ser capturado pela trompa."
+  },
+  { id:5,
+    q: "O que é o Omento Maior e do que é composto conforme as notas?",
+    topic: "Omentos - Omento maior",
+    short: "Grande prega peritoneal (quatro folhetos) contendo vasos, linfáticos, gordura e linfonodos — tipo um 'avental'.",
+    full: "O omento maior (grande epíplon) é uma prega de peritónio de quatro camadas que se posiciona sobre as vísceras anteriores; internamente contém vasos sanguíneos, vasos linfáticos, gordura e linfonodos."
+  },
+  { id:6,
+    q: "O que significa a 'função policial' do Omento Maior?",
+    topic: "Omento - Função imunológica/defesa",
+    short: "Capacidade do omento mover-se e aderir a áreas inflamadas para isolar a infecção (formar abscesso localizado).",
+    full: "O omento maior desloca-se até áreas inflamadas (ex.: apendicite perfurada), adere e, com alças intestinais, 'embrulha' a lesão, limitando a difusão e formando abscesso localizado — mecanismo essencial para conter peritonite difusa."
+  },
+  { id:7,
+    q: "Por que essa função de contenção do omento é vital e a que condição grave é comparada nas notas?",
+    topic: "Patologia - Peritonite difusa",
+    short: "Evita peritonite difusa; a peritonite difusa é comparada a uma queimadura de terceiro grau extensa (70%).",
+    full: "Conter a infeção previne a peritonite difusa, que é uma resposta sistêmica grave com perda de líquidos e risco elevado — nas notas é comparada a uma queimadura de terceiro grau em 70% do corpo pela gravidade e impacto sistêmico."
+  },
+  { id:8,
+    q: "Por que a apendicite é particularmente grave em crianças e idosos, segundo as notas?",
+    topic: "Clínica - Apendicite em extremos de idade",
+    short: "Crianças: omento subdesenvolvido; Idosos: resposta imunitária diminuída e defesa omental fraca.",
+    full: "Em crianças o omento é pequeno e com pouca gordura — incapaz de 'embrulhar' eficientemente a infeção. Em idosos a resposta imunológica e a reação omental são menos vigorosas, facilitando evolução para peritonite e complicações."
+  },
+  { id:9,
+    q: "Que estrutura divide a cavidade peritoneal em andares supramesocólico e inframesocólico?",
+    topic: "Topografia - Mesocolo transverso",
+    short: "O mesocolo (mesentério) transverso — mesocolo transverso divide superior/inferior.",
+    full: "O mesocolo (mesentério) do cólon transverso (mesocolo transverso) separa a cavidade em andar supramesocólico (acima) e inframesocólico (abaixo), importante para a circulação de fluídos e extensão de processos inflamatórios."
+  },
+  { id:10,
+    q: "O que são goteiras parietocólicas e qual a sua função no fluxo de fluidos peritoneais?",
+    topic: "Dinâmica peritoneal - Goteiras",
+    short: "São canais ao lado do cólon ascendente/descendente que conduzem fluidos entre andares e para a pelve.",
+    full: "As goteiras parietocólicas são espaços entre o cólon (ascendente/descendente) e a parede lateral do abdome; funcionam como canais onde o líquido peritoneal flui, comunicando os andares supramesocólico e inframesocólico e conduzindo fluido até a pelve."
+  },
+  { id:11,
+    q: "Qual o ponto mais baixo da cavidade pélvica na mulher em posição ereta e sua relevância clínica?",
+    topic: "Topografia pélvica - Fundo de saco de Douglas",
+    short: "O recesso retouterino (Fundo de saco de Douglas) — local de acúmulo de líquido (sangue, pus, ascite).",
+    full: "O fundo de saco de Douglas é o ponto mais dependente da pelve feminina; por gravidade, líquido livre tende a se acumular ali, sendo local importante de coleta para diagnóstico (ex.: líquido infectado ou sangue)."
+  },
+  { id:12,
+    q: "Como uma apendicite perfurada no andar inframesocólico pode levar a um abscesso subfrênico no andar supramesocólico?",
+    topic: "Fisiopatologia - Disseminação por goteiras e movimento diafragmático",
+    short: "Pus sobe pela goteira parietocólica direita movido por movimentos respiratórios, acumulando-se subfrênico.",
+    full: "O pus do andar inframesocólico pode entrar na goteira parietocólica direita; os movimentos do diafragma geram efeito de sucção/pressão que impulsionam o fluido para cima, até o andar supramesocólico, onde pode formar um abscesso subfrênico — demonstrando que a localização do abscesso pode ficar distante da origem."
+  }
+];
+
+/* ====== Estado e persistência ====== */
+const STORAGE_KEY = 'peritoneum_quiz_v1';
+let state = {
+  order: QUESTIONS.map(q=>q.id),
+  index: 0,
+  marks: {} /* id -> 'correct'|'wrong'|'seen' */
+};
+try {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    const parsed = JSON.parse(raw);
+    if (parsed.order) state.order = parsed.order;
+    if (typeof parsed.index === 'number') state.index = parsed.index;
+    if (parsed.marks) state.marks = parsed.marks;
+  }
+} catch(e){ console.warn('Erro ao ler progresso:', e); }
+
+/* ====== Helpers / Render ====== */
+function getQuestionById(id){ return QUESTIONS.find(q=>q.id===id); }
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); updateStats(); }
+function updateStats(){
+  const seen = Object.keys(state.marks).length;
+  const correct = Object.values(state.marks).filter(v=>v==='correct').length;
+  const wrong = Object.values(state.marks).filter(v=>v==='wrong').length;
+  document.getElementById('statSeen').textContent = seen;
+  document.getElementById('statCorrect').textContent = correct;
+  document.getElementById('statWrong').textContent = wrong;
+  const fill = (seen===0?0:Math.round((correct/Math.max(1,seen))*100));
+  document.getElementById('progressFill').style.width = fill + '%';
+  // render author link (HTML)
+  document.getElementById('authorLine').innerHTML = 'Autor: ' + AUTHOR;
+}
+
+const questionText = document.getElementById('questionText');
+const progressText = document.getElementById('progressText');
+const topicText = document.getElementById('topicText');
+const answerArea = document.getElementById('answerArea');
+const shortAnswer = document.getElementById('shortAnswer');
+const fullAnswer = document.getElementById('fullAnswer');
+
+function render(){
+  if (state.index < 0) state.index = 0;
+  if (state.index >= state.order.length) state.index = state.order.length - 1;
+  const qid = state.order[state.index];
+  const q = getQuestionById(qid);
+  if (!q) {
+    questionText.textContent = 'Nenhuma pergunta encontrada.';
+    progressText.textContent = '';
+    topicText.textContent = '';
+    return;
+  }
+  questionText.textContent = q.q;
+  progressText.textContent = `Pergunta ${state.index+1} de ${state.order.length}`;
+  topicText.textContent = q.topic || '—';
+  answerArea.style.display = 'none';
+  shortAnswer.textContent = '';
+  fullAnswer.textContent = '';
+  updateStats();
+}
+
+/* ====== Interações ====== */
+document.getElementById('nextBtn').addEventListener('click', ()=>{
+  if (state.index < state.order.length - 1) {
+    state.index++;
+    save();
+    render();
+  } else {
+    showSummary();
+  }
+});
+document.getElementById('prevBtn').addEventListener('click', ()=>{
+  if (state.index > 0) {
+    state.index--;
+    save();
+    render();
+  }
+});
+document.getElementById('showShort').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  shortAnswer.textContent = q ? q.short : '';
+  fullAnswer.textContent = '';
+  answerArea.style.display = 'block';
+  if (!state.marks[q.id]) { state.marks[q.id] = 'seen'; save(); }
+});
+document.getElementById('showFull').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  shortAnswer.textContent = q ? q.short : '';
+  fullAnswer.textContent = q ? q.full : '';
+  answerArea.style.display = 'block';
+  if (!state.marks[q.id]) { state.marks[q.id] = 'seen'; save(); }
+});
+document.getElementById('markCorrect').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  state.marks[q.id] = 'correct';
+  save();
+  flashFeedback('Registrado: Acertei', 'ok');
+});
+document.getElementById('markWrong').addEventListener('click', ()=>{
+  const q = getQuestionById(state.order[state.index]);
+  state.marks[q.id] = 'wrong';
+  save();
+  flashFeedback('Registrado: Errei', 'bad');
+});
+function flashFeedback(txt,type){
+  const el = document.createElement('div');
+  el.textContent = txt;
+  el.style.position='fixed';
+  el.style.right='18px';
+  el.style.bottom='18px';
+  el.style.padding='10px 14px';
+  el.style.borderRadius='10px';
+  el.style.background = (type==='ok') ? '#e9fff3' : '#fff4f4';
+  el.style.border = (type==='ok') ? '1px solid #cfeee0' : '1px solid #ffdede';
+  el.style.boxShadow='0 8px 28px rgba(6,40,36,0.08)';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1100);
+}
+
+/* ====== Shuffle ====== */
+const shuffleToggle = document.getElementById('shuffleToggle');
+shuffleToggle.addEventListener('change', ()=> {
+  if (shuffleToggle.checked) {
+    const arr = QUESTIONS.map(q=>q.id);
+    for (let i=arr.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]] = [arr[j],arr[i]];
+    }
+    state.order = arr;
+    state.index = 0;
+    save(); render();
+  } else {
+    state.order = QUESTIONS.map(q=>q.id);
+    state.index = 0;
+    save(); render();
+  }
+});
+
+/* ====== Summary / Export ====== */
+function showSummary(){
+  document.getElementById('qcard').style.display = 'none';
+  document.getElementById('summaryArea').style.display = 'block';
+  const seen = Object.keys(state.marks).length;
+  const correct = Object.values(state.marks).filter(v=>v==='correct').length;
+  const wrong = Object.values(state.marks).filter(v=>v==='wrong').length;
+  document.getElementById('summaryText').textContent = `Vistas: ${seen} — Acertos: ${correct} — Erros: ${wrong}`;
+  const list = document.getElementById('summaryList');
+  list.innerHTML = '';
+  QUESTIONS.forEach(q=>{
+    const mark = state.marks[q.id] || '—';
+    const div = document.createElement('div');
+    div.style.padding='10px';
+    div.style.borderBottom='1px solid #eef8f4';
+    div.innerHTML = `<strong>${q.q}</strong>
+      <div class="muted small">Tópico: ${q.topic || '—'}</div>
+      <div class="muted small">Status: ${mark}</div>
+      <div class="muted small">Resposta curta: ${q.short}</div>`;
+    list.appendChild(div);
+  });
+}
+document.getElementById('backToQuiz').addEventListener('click', ()=>{
+  document.getElementById('summaryArea').style.display = 'none';
+  document.getElementById('qcard').style.display = 'block';
+});
+
+function toCSV(){
+  const rows = [['id','pergunta','topico','status','timestamp']];
+  QUESTIONS.forEach(q=>{
+    const status = state.marks[q.id] || '';
+    const qtext = q.q.replace(/"/g,'""');
+    const topic = (q.topic||'').replace(/"/g,'""');
+    rows.push([q.id, `"${qtext}"`, `"${topic}"`, status, new Date().toISOString()]);
+  });
+  return rows.map(r=>r.join(',')).join('\n');
+}
+document.getElementById('exportCSV').addEventListener('click', ()=>{
+  const csv = toCSV();
+  const blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'peritoneo_revisao.csv';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('clearProgress').addEventListener('click', ()=>{
+  if (!confirm('Apagar todo o progresso salvo no navegador?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = { order: QUESTIONS.map(q=>q.id), index:0, marks:{} };
+  render(); updateStats();
+});
+
+/* ====== Init & shortcuts ====== */
+render();
+updateStats();
+
+document.addEventListener('keydown', (ev)=>{
+  if (ev.key === 'ArrowRight' || ev.key.toLowerCase()==='n') document.getElementById('nextBtn').click();
+  if (ev.key === 'ArrowLeft' || ev.key.toLowerCase()==='p') document.getElementById('prevBtn').click();
+  if (ev.key.toLowerCase()==='s') document.getElementById('showShort').click();
+  if (ev.key.toLowerCase()==='f') document.getElementById('showFull').click();
+  if (ev.key.toLowerCase()==='a') document.getElementById('markCorrect').click();
+  if (ev.key.toLowerCase()==='e') document.getElementById('markWrong').click();
+});
+</script>
 </body>
 </html>
