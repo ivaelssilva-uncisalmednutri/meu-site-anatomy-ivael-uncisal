@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Revisão — Peritônio e Cavidade Peritoneal</title>
   <style>
-    /* --- NOVO TEMA (tons esverdeados, visual limpo) --- */
+    /* --- TEMA (tons esverdeados, visual limpo) --- */
     :root{
       --bg:#eef7f5;
       --card:#ffffff;
@@ -44,7 +44,7 @@
     @media (max-width:720px){header{flex-direction:column;align-items:flex-start}}
     /* --- Social link --- */
     .social-link { color: var(--accent); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 7px; }
-    .social-link svg { width:16px; height:16px; display:inline-block; vertical-align:middle; fill: currentColor; }
+    .social-link svg { width:16px; height:16px; display:inline-block; vertical-align:middle; }
     /* small responsive tweaks */
     .meta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
     .topic-pill{background:#eef9f7;border-radius:999px;padding:6px 10px;font-size:13px;color:var(--accent-2);border:1px solid #dff3ef}
@@ -56,7 +56,7 @@
       <div>
         <h1>Revisão — Peritônio e Cavidade Peritoneal</h1>
         <div class="subtitle">Uma pergunta por vez — clique em "Mostrar explicação completa" e registre se você <em>acertou</em>.</div>
-        <div id="authorLine" class="subtitle" style="margin-top:8px"></div>
+        <!-- autor removido do topo conforme solicitado -->
       </div>
       <div class="stats" aria-hidden="true">
         <div class="muted small">Acertos: <span id="statCorrect">0</span></div>
@@ -115,8 +115,13 @@
 
     <footer>
       <p style="margin-bottom:6px">
-        <a href="https://www.instagram.com/nutrimed_ivael" target="_blank" rel="noopener noreferrer" class="social-link">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zM8 4.202a3.79 3.79 0 1 0 0 7.58 3.79 3.79 0 0 0 0-7.58z"/></svg>
+        <a href="https://www.instagram.com/nutrimed_ivael" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram Ivael Silva">
+          <!-- Ícone do Instagram (contorno, sem quadrado) -->
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" fill="none" stroke-width="1.4"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="17.5" cy="6.5" r="0.6" fill="currentColor"></circle>
+          </svg>
           Ivael Silva
         </a> - Estudante de Medicina da Uncisal
       </p>
@@ -125,84 +130,160 @@
   </div>
 
 <script>
-/* ====== Metadados e autor (renderizado como HTML link) ====== */
-const AUTHOR = `<a href="https://www.instagram.com/nutrimed_ivael" target="_blank" rel="noopener noreferrer" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zM8 4.202a3.79 3.79 0 1 0 0 7.58 3.79 3.79 0 0 0 0-7.58z"/></svg> Ivael Silva</a> - Estudante de Medicina da Uncisal`;
+/* ====== Metadados ====== */
+const AUTHOR = 'Ivael Silva - Estudante de Medicina da Uncisal';
 
 /* ====== QUESTIONS (extraídas do PDF: Peritônio e cavidade peritoneal - Questões.pdf) ======
    Fonte: Questões.pdf (arquivo do usuário). :contentReference[oaicite:1]{index=1}
+   (Inclui as perguntas originais + novas adicionadas conforme o anexo atualizado)
 */
 const QUESTIONS = [
   { id:1,
     q: "Descreva a diferença fundamental entre víscera intraperitoneal e retroperitoneal.",
     topic: "Classificação das vísceras - Peritônio",
-    short: "Intraperitoneal: fruto de meso que a suspende e está coberta por peritónio visceral; Retroperitoneal: apenas a face anterior é coberta pelo peritónio parietal e é mais fixa.",
-    full: "Uma víscera intraperitoneal (ex.: cólon transverso) é quase totalmente envolvida por peritónio visceral e suspensa por um meso, conferindo mobilidade. Uma víscera retroperitoneal (ex.: cólon ascendente) fica atrás do peritónio parietal, coberta só na face anterior e fixada à parede posterior."
+    short: "Intraperitoneal: suspensa por meso e coberta por peritónio visceral (móvel). Retroperitoneal: apenas face anterior coberta pelo peritónio parietal (fixa).",
+    full: "Uma víscera intraperitoneal (ex.: cólon transverso) é quase totalmente envolvida por peritónio visceral e suspensa por um meso, conferindo mobilidade. Uma víscera retroperitoneal (ex.: cólon ascendente) fica atrás do peritónio parietal, sendo coberta apenas pela face anterior, tornando-a fixa na parede posterior."
   },
   { id:2,
     q: "Por que uma hemorragia retroperitoneal maciça pode ser 'invisível' num exame inicial da cavidade peritoneal?",
-    topic: "Peritonio - Hemorragia retroperitoneal",
-    short: "Porque o sangue se acumula no espaço retroperitoneal, separado da cavidade peritoneal, podendo conter grande volume sem derramar na cavidade livre.",
-    full: "O espaço retroperitoneal está fora da cavidade peritoneal; sangue gerado por lesão retroperitoneal (ex.: fratura pélvica) pode ficar oculto nesse espaço e não aparecer em exame abdominal com líquido intraperitoneal, escondendo perda volêmica massiva."
+    topic: "Peritônio - Hemorragia retroperitoneal",
+    short: "Porque o sangue fica no espaço retroperitoneal, separado da cavidade peritoneal, podendo acomodar grande volume sem derramar livremente.",
+    full: "O espaço retroperitoneal situa-se fora da cavidade peritoneal; sangue proveniente de lesões retroperitoneais (ex.: fratura pélvica) pode acumular-se ali sem se misturar ao líquido intraperitoneal visível no exame, ocultando grande perda volemica."
   },
   { id:3,
-    q: "Qual característica anatômica exclusiva da cavidade peritoneal feminina e sua principal consequência patológica?",
+    q: "Qual característica anatômica única da cavidade peritoneal feminina e sua principal consequência patológica?",
     topic: "Anatomia - Comunicação peritoneal feminina",
-    short: "Comunicação direta com o meio externo via trompa de Falópio; consequência: risco de DIP (infecção ascendente).",
-    full: "As trompas de Falópio abrem-se na cavidade peritoneal para captar o óvulo — isso gera uma via direta entre o meio externo e a cavidade peritoneal. Consequentemente, infecções do trato genital inferior podem ascender e causar Doença Inflamatória Pélvica (DIP) e peritonite."
+    short: "Comunicação com o meio externo via trompas de Falópio; consequência: risco de infecção ascendente (DIP).",
+    full: "As trompas de Falópio abrem-se na cavidade peritoneal para captar o óvulo, proporcionando uma via direta entre meio externo e cavidade peritoneal. Assim, infecções do trato genital inferior podem ascender e causar Doença Inflamatória Pélvica (DIP) e peritonite."
   },
   { id:4,
     q: "Por que o ovário é descrito como uma exceção entre órgãos intraperitoneais?",
     topic: "Anatomia funcional - Ovário",
-    short: "Apesar de estar na cavidade peritoneal, o ovário não é coberto por peritónio, permitindo ovulação.",
-    full: "O ovário está dentro da cavidade peritoneal mas não é revestido por peritónio visceral: essa 'nudez' facilita a liberação do óvulo diretamente na cavidade peritoneal para ser capturado pela trompa."
+    short: "Embora intraperitoneal, o ovário não é totalmente revestido por peritónio, permitindo a ovulação.",
+    full: "O ovário está dentro da cavidade peritoneal mas não é coberto por peritónio visceral — essa 'nudez' facilita a liberação do óvulo diretamente na cavidade peritoneal para captura pela trompa."
   },
   { id:5,
-    q: "O que é o Omento Maior e do que é composto conforme as notas?",
+    q: "O que é o Omento Maior e do que é composto?",
     topic: "Omentos - Omento maior",
-    short: "Grande prega peritoneal (quatro folhetos) contendo vasos, linfáticos, gordura e linfonodos — tipo um 'avental'.",
+    short: "Grande prega peritoneal (quatro folhetos) com vasos, linfáticos, gordura e linfonodos — funciona como 'avental'.",
     full: "O omento maior (grande epíplon) é uma prega de peritónio de quatro camadas que se posiciona sobre as vísceras anteriores; internamente contém vasos sanguíneos, vasos linfáticos, gordura e linfonodos."
   },
   { id:6,
     q: "O que significa a 'função policial' do Omento Maior?",
-    topic: "Omento - Função imunológica/defesa",
-    short: "Capacidade do omento mover-se e aderir a áreas inflamadas para isolar a infecção (formar abscesso localizado).",
-    full: "O omento maior desloca-se até áreas inflamadas (ex.: apendicite perfurada), adere e, com alças intestinais, 'embrulha' a lesão, limitando a difusão e formando abscesso localizado — mecanismo essencial para conter peritonite difusa."
+    topic: "Omento - Defesa local",
+    short: "Capacidade do omento de mover-se e aderir a áreas inflamadas para isolar a infeção (formar abscesso localizado).",
+    full: "O omento maior desloca-se até áreas inflamadas (ex.: apendicite perfurada), adere e, com alças intestinais, 'embrulha' o processo, limitando a difusão e formando um abscesso localizado — mecanismo essencial para conter a peritonite."
   },
   { id:7,
-    q: "Por que essa função de contenção do omento é vital e a que condição grave é comparada nas notas?",
+    q: "Por que a função de contenção do omento é vital e a que condição grave é comparada nas notas?",
     topic: "Patologia - Peritonite difusa",
-    short: "Evita peritonite difusa; a peritonite difusa é comparada a uma queimadura de terceiro grau extensa (70%).",
-    full: "Conter a infeção previne a peritonite difusa, que é uma resposta sistêmica grave com perda de líquidos e risco elevado — nas notas é comparada a uma queimadura de terceiro grau em 70% do corpo pela gravidade e impacto sistêmico."
+    short: "Evita peritonite difusa; a peritonite difusa é comparada a queimadura de terceiro grau em 70% do corpo pela gravidade.",
+    full: "Conter a infeção evita a peritonite difusa, que causa perda massiva de líquidos e resposta inflamatória sistêmica grave — nas notas comparada a uma queimadura extensa de terceiro grau."
   },
   { id:8,
-    q: "Por que a apendicite é particularmente grave em crianças e idosos, segundo as notas?",
+    q: "Por que a apendicite é particularmente grave em crianças e idosos?",
     topic: "Clínica - Apendicite em extremos de idade",
-    short: "Crianças: omento subdesenvolvido; Idosos: resposta imunitária diminuída e defesa omental fraca.",
-    full: "Em crianças o omento é pequeno e com pouca gordura — incapaz de 'embrulhar' eficientemente a infeção. Em idosos a resposta imunológica e a reação omental são menos vigorosas, facilitando evolução para peritonite e complicações."
+    short: "Crianças: omento subdesenvolvido; Idosos: resposta imunitária e defesa omental diminuídas.",
+    full: "Em crianças o omento é pequeno, fino e com pouca gordura — insuficiente para 'embrulhar' a infeção. Em idosos a resposta imunológica e reatividade omental são reduzidas, favorecendo evolução para peritonite."
   },
   { id:9,
     q: "Que estrutura divide a cavidade peritoneal em andares supramesocólico e inframesocólico?",
     topic: "Topografia - Mesocolo transverso",
-    short: "O mesocolo (mesentério) transverso — mesocolo transverso divide superior/inferior.",
-    full: "O mesocolo (mesentério) do cólon transverso (mesocolo transverso) separa a cavidade em andar supramesocólico (acima) e inframesocólico (abaixo), importante para a circulação de fluídos e extensão de processos inflamatórios."
+    short: "O mesocolo transverso (mesentério do cólon transverso).",
+    full: "O mesocolo (mesentério) do cólon transverso separa a cavidade em andar supramesocólico (acima) e inframesocólico (abaixo), importante para circulação de líquidos e propagação de processos patológicos."
   },
   { id:10,
     q: "O que são goteiras parietocólicas e qual a sua função no fluxo de fluidos peritoneais?",
     topic: "Dinâmica peritoneal - Goteiras",
-    short: "São canais ao lado do cólon ascendente/descendente que conduzem fluidos entre andares e para a pelve.",
-    full: "As goteiras parietocólicas são espaços entre o cólon (ascendente/descendente) e a parede lateral do abdome; funcionam como canais onde o líquido peritoneal flui, comunicando os andares supramesocólico e inframesocólico e conduzindo fluido até a pelve."
+    short: "Canais ao lado do cólon que conduzem fluidos entre andares e para a pelve.",
+    full: "As goteiras parietocólicas são espaços entre o cólon ascendente/descendente e a parede lateral; funcionam como vias por onde o líquido peritoneal escorre, comunicando andares e levando fluidos à pelve."
   },
   { id:11,
-    q: "Qual o ponto mais baixo da cavidade pélvica na mulher em posição ereta e sua relevância clínica?",
+    q: "Qual o ponto mais baixo da cavidade pélvica na mulher e por que é clinicamente importante?",
     topic: "Topografia pélvica - Fundo de saco de Douglas",
-    short: "O recesso retouterino (Fundo de saco de Douglas) — local de acúmulo de líquido (sangue, pus, ascite).",
-    full: "O fundo de saco de Douglas é o ponto mais dependente da pelve feminina; por gravidade, líquido livre tende a se acumular ali, sendo local importante de coleta para diagnóstico (ex.: líquido infectado ou sangue)."
+    short: "O recesso retouterino (Fundo de saco de Douglas) — local onde líquido tende a acumular por gravidade.",
+    full: "O fundo de saco de Douglas é o ponto mais dependente da pelve feminina; líquido livre (sangue, pus, ascite) tende a acumular ali, sendo local útil para diagnóstico por aspiração ou imagem."
   },
   { id:12,
-    q: "Como uma apendicite perfurada no andar inframesocólico pode levar a um abscesso subfrênico no andar supramesocólico?",
-    topic: "Fisiopatologia - Disseminação por goteiras e movimento diafragmático",
-    short: "Pus sobe pela goteira parietocólica direita movido por movimentos respiratórios, acumulando-se subfrênico.",
-    full: "O pus do andar inframesocólico pode entrar na goteira parietocólica direita; os movimentos do diafragma geram efeito de sucção/pressão que impulsionam o fluido para cima, até o andar supramesocólico, onde pode formar um abscesso subfrênico — demonstrando que a localização do abscesso pode ficar distante da origem."
+    q: "Como uma apendicite perfurada no andar inframesocólico pode levar a um abscesso subfrênico?",
+    topic: "Fisiopatologia - Disseminação por goteiras",
+    short: "Pus sobe pela goteira parietocólica direita movido por movimentos respiratórios até o andar supramesocólico, acumulando-se subfrênico.",
+    full: "O pus pode entrar na goteira parietocólica direita; os movimentos do diafragma criam fluxo que impulsiona o líquido para cima até o andar supramesocólico, onde se acumula em recessos como o subfrênico e forma abscesso distante da origem."
+  },
+
+  /* ======= Novas perguntas adicionadas do arquivo ampliado (aderências, intestino grosso, volvo) ======= */
+
+  { id:13,
+    q: "O que é, anatomicamente, uma aderência pós-operatória?",
+    topic: "Aderências - Definição",
+    short: "Faixa de tecido cicatricial que conecta superfícies ou órgãos que normalmente não estão ligados.",
+    full: "Anatomicamente, uma aderência pós-operatória é uma banda de tecido fibroso (cicatriz) formada após trauma cirúrgico do peritónio, ligando superfícies que normalmente são separadas, por exemplo alça intestinal à parede abdominal ou entre alças."
+  },
+  { id:14,
+    q: "Qual é o evento inicial que desencadeia a formação de aderências na cavidade peritoneal?",
+    topic: "Aderências - Fisiopatologia",
+    short: "Trauma cirúrgico/lesão do peritónio que inicia processo de cicatrização.",
+    full: "O gatilho inicial é o trauma do peritónio (abertura/manipulação cirúrgica, isquemia, inflamação), que ativa processo inflamatório e fibrinogénese; se a fibrinólise local for insuficiente, forma-se tecido fibroso persistente (aderência)."
+  },
+  { id:15,
+    q: "Descreva o mecanismo mecânico pelo qual uma aderência pode causar obstrução do intestino delgado.",
+    topic: "Aderências - Obstrução intestinal",
+    short: "Uma alça intestinal pode passar por uma 'brecha' criada por uma aderência e ficar presa/torcida, causando obstrução.",
+    full: "Fisicamente, uma faixa fibrosa pode criar um orifício ou ponto fixo; durante peristalse uma alça pode deslizar e ficar aprisionada na brecha, ou torcer em torno da aderência, levando à obstrução mecânica e possível estrangulamento."
+  },
+  { id:16,
+    q: "Por que um paciente pode desenvolver obstrução por aderências anos após a cirurgia original?",
+    topic: "Aderências - Evolução tardia",
+    short: "Aderências formam-se durante cicatrização e podem permanecer assintomáticas; o aprisionamento é evento mecânico imprevisível.",
+    full: "As aderências podem existir por anos sem sintomas; a obstrução ocorre quando uma alça intestinal, por movimento normal, entra numa brecha ou fica presa — evento que pode acontecer muito tempo após a cirurgia inicial."
+  },
+  { id:17,
+    q: "Quais são as três características externas que distinguem o intestino grosso do delgado?",
+    topic: "Intestino grosso - Características externas",
+    short: "Tênias, haustrações (saculações) e apêndices epiploicos.",
+    full: "O intestino grosso apresenta tênias (fitas musculares longitudinais), haustrações (saculações formadas pelas tênias) e apêndices epiploicos (pequenas bolsas de peritónio com gordura) — o delgado não tem essas características."
+  },
+  { id:18,
+    q: "Explique como as tênias produzem as haustrações do cólon.",
+    topic: "Intestino grosso - Tênias e haustrações",
+    short: "Tênias são mais curtas que o cólon; sua contração encurta a parede formando as haustrações.",
+    full: "As tênias longitudinais têm comprimento menor que o cólon; o seu tônus encurta a parede, produzindo dobras e saculações transversais chamadas haustrações — característica macroscópica do cólon."
+  },
+  { id:19,
+    q: "O que são apêndices epiploicos (processos epiploicos)?",
+    topic: "Intestino grosso - Apêndices epiploicos",
+    short: "Pequenas bolsas de peritónio preenchidas por gordura pendendo da superfície do cólon.",
+    full: "Apêndices epiploicos são bolsas peritoneais cheias de gordura que pendem ao longo do cólon; podem inflamar (epiploite) e simular quadro clínico abdominal."
+  },
+  { id:20,
+    q: "Durante uma cirurgia, como distinguir uma alça lisa de outra com saculações?",
+    topic: "Cirurgia - Identificação intestinal",
+    short: "Alça lisa = intestino delgado; alça com saculações (haustrações) = intestino grosso (cólon).",
+    full: "Visualmente, alças do intestino delgado têm superfície lisa; o cólon apresenta haustrações, tênias e apêndices epiploicos. Essas diferenças ajudam a identificar segmentos em operação."
+  },
+  { id:21,
+    q: "Descreva a desproporção entre o comprimento do intestino delgado e a sua base de fixação.",
+    topic: "Mobilidade intestinal - Mesentério",
+    short: "Intestino delgado ≈ 6 m; raiz do mesentério ≈ 20–25 cm — grande mobilidade relativa.",
+    full: "O intestino delgado é longo (~6 m) enquanto a raiz do mesentério que o prende à parede posterior tem apenas 20–25 cm; essa discrepância cria enorme mobilidade das alças, predispondo a movimentos de torção."
+  },
+  { id:22,
+    q: "Quais os dois pontos fixos entre os quais a raiz do mesentério se estende?",
+    topic: "Mesentério - Pontos de fixação",
+    short: "Do ângulo duodenojejunal até a junção ileocecal.",
+    full: "A raiz do mesentério estende-se obliquamente desde a flexura duodenojejunal (ângulo duodenojejunal) até a junção ileocecal, prendendo as alças e definindo o eixo em torno do qual podem ocorrer torções."
+  },
+  { id:23,
+    q: "Como a base de fixação curta permite que ocorra um volvo intestinal?",
+    topic: "Volvo - Mecanismo",
+    short: "A base curta atua como eixo estreito; as alças longas giram ao redor dele, causando torção (volvo).",
+    full: "Com uma raiz mesentérica estreita, a grande massa de intestino móvel pode girar em torno dessa base como se fosse um eixo — a torção prende vasos mesentéricos e o lúmen, produzindo volvo."
+  },
+  { id:24,
+    q: "Qual a consequência imediata e potencialmente fatal de um volvo e por que é uma emergência absoluta?",
+    topic: "Volvo - Gravidade clínica",
+    short: "Torção dos vasos mesentéricos → isquemia/necrose intestinal; risco de perfuração e sepse — cirurgia urgente.",
+    full: "O volvo torce os vasos mesentéricos que irrigam grandes segmentos intestinais, causando isquemia e necrose rápida. A evolução pode ser fulminante (perda de grandes porções de intestino), o que transforma o quadro em emergência cirúrgica absoluta."
   }
 ];
 
@@ -235,8 +316,6 @@ function updateStats(){
   document.getElementById('statWrong').textContent = wrong;
   const fill = (seen===0?0:Math.round((correct/Math.max(1,seen))*100));
   document.getElementById('progressFill').style.width = fill + '%';
-  // render author link (HTML)
-  document.getElementById('authorLine').innerHTML = 'Autor: ' + AUTHOR;
 }
 
 const questionText = document.getElementById('questionText');
